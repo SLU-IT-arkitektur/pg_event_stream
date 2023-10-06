@@ -22,4 +22,4 @@ app.MapGet("/courses", async (IGetAllCourses getAllCoursesFeature) =>
 });
 
 
-app.Run("http://*:5000");
+app.Run("http://*:1337");

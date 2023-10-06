@@ -15,7 +15,7 @@ services:
       - webconsumerdb
     build: ./webconsumer
     ports:
-      - 5000:5000 # the api..
+      - 1337:1337 # the api..
     networks:
       - pgevents
     environment:

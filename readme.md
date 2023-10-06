@@ -93,5 +93,5 @@ some services are mapped to localhost on different ports:
 * postgres on port 5432
 * pgadmin on port 5050
 * mongo on port 27017
-* webconsumer on port 5000 (example endpoint at http://localhost:5000/courses)
+* webconsumer on port 1337 (example endpoint at http://localhost:1337/courses)
 
