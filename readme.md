@@ -6,7 +6,7 @@ This is a proof-of-concept for using postgres as an event stream with one or mor
 
 ## CONTEXT AND REASONING
 
-For a few projects we see the need to use event driven architecture and event streaming. We have been looking at introducing RabbitMQ for example but we do, however, want to keep the technology stack as simple as possible (both in terms of developer skills needed and in terms of operational complexity). The idea with this POC is to evaluate if using PostgreSQL as an event stream solution is "good enough" for our needs. The purpose is to utilize technology already established in-house when it suffices but not to try and re-implement a full-blown event streaming platform. It is, like so many things, a trade-off when to introduce something new and when to stick to something you know. This POC is an interesting experiment and we will see where it takes us this time. I think there is something to say for [choosing "boring" technology](https://boringtechnology.club/).
+For a few projects we see the need to use event driven architecture and event streaming. We have been looking at introducing RabbitMQ for example but we do, however, want to keep the technology stack as simple as possible (both in terms of developer skills needed and in terms of operational complexity). The idea with this POC is to evaluate if using PostgreSQL as an event stream solution is "good enough" for our needs. The purpose is to utilize technology **already established** in-house when it suffices but not to try and re-implement a full-blown event streaming platform. It is, like so many things, a trade-off when to introduce something new and when to stick to something you know. This POC is an interesting experiment and we will see where it takes us this time. I think there is something to say for [choosing "boring" technology](https://boringtechnology.club/).
 
 
 ## SYSTEM IN POC
@@ -92,5 +92,6 @@ You can verify this with **mongosh** and **psql** (or some GUI apps...)
 some services are mapped to localhost on different ports:
 * postgres on port 5432
 * pgadmin on port 5050
+* mongo on port 27017
 * webconsumer on port 5000 (example endpoint at http://localhost:5000/courses)
 
