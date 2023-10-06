@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+
+  producer:
+    depends_on:
+      - db
+    build: ./producer
+    networks:
+      - pgevents
+      
+  web_consumer:
+    depends_on:
+      - db
+      - webconsumerdb
+    build: ./webconsumer
+    ports:
+      - 5000:5000 # the api..
+    networks:
+      - pgevents
+    environment:
+      TOPICS: 'courses, policies, hallon' # comma seperated list of topics
+      MONGO_CONNECTION_STRING: 'mongodb://mongo:password@webconsumerdb:27017'
+      POSTGRES_CONNECTION_STRING: 'Host=db;Database=eventsdb;Username=consumer;Password=consumer'
+
+  db_migrations: 
+    depends_on:
+      - db
+    build: ./migrations
+    networks:
+      - pgevents
+    environment:
+      POSTGRES_CONNECTION_STRING: 'postgres://postgres:password@db:5432/eventsdb?sslmode=disable'
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    networks:
+      - pgevents
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: eventsdb
+    volumes:
+      - postgres:/data/postgres
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - pgevents
+    restart: unless-stopped
+
+  webconsumerdb:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    networks:
+      - pgevents
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: password
+    
+networks:
+  pgevents:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:

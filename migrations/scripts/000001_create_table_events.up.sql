@@ -1,0 +1,9 @@
+
+CREATE TABLE events (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  topic VARCHAR(255) NOT NULL,
+  body JSONB NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
