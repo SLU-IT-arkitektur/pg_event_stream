@@ -40,7 +40,7 @@ public interface IApplicationEventHandler
 } 
 ```
 
-``OnNotifcation`` gets called by the PostgresEventSubscriber on every received notification with new events.
+``OnNotification`` gets called by the PostgresEventSubscriber on every received notification with new events.
 The consuming application must implement this method to be idempotent, see ApplicationEventHandler.cs in the webconsumer project for an example. How the consuming app does this and where (datastore) it keeps track of its received (or handled) events is up to the consuming app.
 
 ``GetLatestReceivedId`` gets called by the PostgresEventSubscriber every time it fetches new events from the eventsdatabase. This happens when the subscriber receives a notifcation on the channel, on application startup and when reconnecting after a connection loss.
