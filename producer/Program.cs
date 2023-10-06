@@ -15,8 +15,8 @@ await Task.Delay(10000);
 
 // every two seconds we send two events with different topics
 var sql = "INSERT INTO events (name, topic, body, created_at) VALUES (@name, @topic, @body::jsonb, @created_at) RETURNING id;";
-var everTwoSeconds = new PeriodicTimer(TimeSpan.FromSeconds(2)); 
-while (await everTwoSeconds.WaitForNextTickAsync())
+var everyTwoSeconds = new PeriodicTimer(TimeSpan.FromSeconds(2)); 
+while (await everyTwoSeconds.WaitForNextTickAsync())
 {
     var newCourseCreatedEvent = new CourseCreated(Guid.NewGuid(), "math", "Mathematics", 60, DateTime.UtcNow);
     var internalEvent = new InternalEvent(null, newCourseCreatedEvent.GetType().Name, "courses", JsonSerializer.Serialize(newCourseCreatedEvent), DateTime.UtcNow);
