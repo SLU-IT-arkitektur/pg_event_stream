@@ -44,7 +44,7 @@ public class PostgresEventsSubscriber : BackgroundService
     private async Task StartListeningForEvents(CancellationToken cancellationToken)
     {
         using var subscriptionConnection = await ConnectWithRetry(_connectionString); // subscribing to notifications requires an open connection
-        
+
         // make sure we are up to date before we start listening for events!
         // even tho we are not using the long-lived subscriptionConnection (that is doing the LISTEN) for fetching events, we want to wait until it is established..
         // ... that way we know that it is safe to try and pre-fetch missed events 
@@ -60,11 +60,9 @@ public class PostgresEventsSubscriber : BackgroundService
         // subscribe to notifications (i.e listen for events)
         subscriptionConnection.Notification += async (o, e) =>
         {
-            _logger.LogInformation($"Received notification: {e.Payload}");
-            // payload = topic|eventid
-            var split = e.Payload.Split("|");
-            var topic = split[0];
-            var eventId = int.Parse(split[1]);
+            var (successfullyParsedPayload, topic, eventId) = TryParsePayload(e.Payload);
+            if (!successfullyParsedPayload)
+                return;
 
             await HandleEvent(topic, eventId);
         };
@@ -90,6 +88,23 @@ public class PostgresEventsSubscriber : BackgroundService
         }
     }
 
+    private (bool, string, int) TryParsePayload(string payload)
+    {
+        try
+        {
+            // payload = topic|eventid
+            var split = payload.Split("|");
+            var topic = split[0];
+            var eventId = int.Parse(split[1]);
+            return (true, topic, eventId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error while parsing notification msg string, expecting topic|eventid: {ex.Message}");
+            return (false, "", 0);
+        }
+    }
+    
     // if an exception occurs while handling an event, we need to stop listening to notifications
     // we do not want to exit the application, because we dont want the hosting platform (k8s forexample) to automatically restart 
     // the app and thereby continue processing future events before dealing with the failed one...
@@ -150,7 +165,7 @@ public class PostgresEventsSubscriber : BackgroundService
                 NpgsqlConnection connection = new(connectionString);
                 _logger.LogInformation($"Connecting to events database (attempt {retryAttempt + 1}/{maxRetryAttempts})");
                 await connection.OpenAsync();
-                _logger.LogInformation("Connected to events database successfully!");
+                _logger.LogInformation("Connected to events database successfullyParsedPayloadfully!");
                 return connection;
             }
             catch (Exception ex)

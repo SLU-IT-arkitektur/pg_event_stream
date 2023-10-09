@@ -29,6 +29,10 @@ while (await everyTwoSeconds.WaitForNextTickAsync())
     var createdEventId2 = await connection.ExecuteScalarAsync(sql, internalEvent);
     await connection.ExecuteAsync($"NOTIFY events, '{internalEvent.topic}|{createdEventId2}';"); 
     Console.WriteLine($"New event with id {createdEventId2} and topic {internalEvent.topic} sent");
+
+    // sending a bad formatted NOTIFICATION
+    await connection.ExecuteAsync($"NOTIFY events, 'badformat';");
+    
 }
 
 // internal event for our event stream 
