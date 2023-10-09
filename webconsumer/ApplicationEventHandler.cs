@@ -25,13 +25,13 @@ public class ApplicationEventHandler : IApplicationEventHandler
         {
             if (await TryClaimEvent(newEvent.id))
             {
-                _logger.LogInformation($"Event {newEvent.id} claimed. Handling..");
+                _logger.LogDebug($"Event {newEvent.id} claimed. Handling..");
                 await HandledEvent(newEvent);
 
             }
             else
             {
-                _logger.LogInformation($"Event {newEvent.id} already claimed. Ignoring.");
+                _logger.LogDebug($"Event {newEvent.id} already claimed. Ignoring.");
             }
         }
     }

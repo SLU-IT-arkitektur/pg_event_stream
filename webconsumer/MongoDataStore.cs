@@ -35,7 +35,7 @@ public class MongoDataStore : IMongoDataStore
     public async Task<bool> TryMarkAsReceived(int eventId)
     {
         
-        _logger.LogInformation($"Trying to mark event {eventId} as received..");
+        _logger.LogDebug($"Trying to mark event {eventId} as received..");
         var collection = _client.GetDatabase("consumer").GetCollection<ReceivedEvent>("receivedEvents");
         try
         {
@@ -47,7 +47,7 @@ public class MongoDataStore : IMongoDataStore
         {
             if (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
             {
-                _logger.LogInformation($"Event {eventId} already marked as received.");
+                _logger.LogDebug($"Event {eventId} already marked as received.");
                 return false;
             }
             else

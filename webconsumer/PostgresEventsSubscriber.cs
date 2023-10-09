@@ -53,7 +53,7 @@ public class PostgresEventsSubscriber : BackgroundService
         foreach (var topic in topics)
         {
             var events = await GetNewEvents(topic, latestId);
-            _logger.LogInformation($"Fetched {events.Count()} new events for topic {topic}");
+            _logger.LogDebug($"Fetched {events.Count()} new events for topic {topic}");
             await ProcessEventsOrStopListeningAsync(events);
         }
 
@@ -144,7 +144,7 @@ public class PostgresEventsSubscriber : BackgroundService
         using var connection = new NpgsqlConnection(_connectionString);
         var newEventsSql = $"select * from events where id > @fetchFromEventId and topic = @topic order by id asc limit 60000;";
 
-        var fetchFromEventId = latestId - 10; // we fetch 10 events before the latest processed event to make sure we dont miss any events under high load
+        var fetchFromEventId = latestId - 20; // we fetch 20 events before the latest processed event to make sure we dont miss any events under high load
         var events = await connection.QueryAsync<PGEvent>(newEventsSql, new { fetchFromEventId, topic });
         return events.ToList();
     }
