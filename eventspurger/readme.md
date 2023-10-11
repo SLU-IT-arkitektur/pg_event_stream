@@ -1,7 +1,7 @@
 ## eventspurger
 
-A simple c# application that deletes events from our events table.
-it takes two arguments: **units** (*days or hours or minutes*) and a **number** (int).
+A simple c# application that deletes events from our events table that are older than a configurable time(unit).
+it takes two arguments: **unit** (*days or hours or minutes*) and a **number** (int).
 
 If you run it locally this can look like this:
 ```
