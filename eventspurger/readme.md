@@ -10,4 +10,4 @@ dotnet run -u minutes -n 1
 The idea is for this eventspurger to run in a container in a kubernetes CronJob, both locally with Skaffold and in our test and production clusters.
 
 How often it runs can be configured in the CronJob yaml file.
-How many events it deletes can be configured in the ConfigMap yaml file.
+The unit (-u) and number (-n) arguments can be configured in a ConfigMap yaml file.
