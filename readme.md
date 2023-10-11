@@ -24,11 +24,11 @@ and permissions for the producer and the consumer)
 
 **webconsumerdb:** MongoDB. the example consumers database.
 
-**eventspurger:** purges events from the eventsdatabase (db) after a certain amount of time. configurable. ***LEFT TO IMPLEMENT***
+**eventspurger:** purges events from the eventsdatabase (db) after a certain amount of time. configurable. See [./eventspurger/readme.md](./eventspurger/readme.md) for more info.
 
 ## HOW IT WORKS
 
-The producer writes events to the events table in the eventsdatabase (db) and emits a ``NOTIFY`` notification on the channel "events" for every event. The webconsumer subscribes to the channel "events" with ``LISTEN`` and fetches events of interest (based on topics) from the events table in the eventsdatabase (db). The webconsumer keeps track of received events and can be stopped and started again without missing events since it will fetch any missed events when it starts up. It also fetches any new events when successfully reconnecting after a connection loss. The postgres event stream can store events for a configurable amount of time, after which they are purged. ***LEFT TO IMPLEMENT***.
+The producer writes events to the events table in the eventsdatabase (db) and emits a ``NOTIFY`` notification on the channel "events" for every event. The webconsumer subscribes to the channel "events" with ``LISTEN`` and fetches events of interest (based on topics) from the events table in the eventsdatabase (db). The webconsumer keeps track of received events and can be stopped and started again without missing events since it will fetch any missed events when it starts up. It also fetches any new events when successfully reconnecting after a connection loss. The postgres event stream can store events for a configurable amount of time, after which they are purged.
 
 PostgresEventSubscriber is a generic asp.net core 6 ``BackgroundService`` that can be used by any .net 6 web app to subscribe to a postgres event stream. It defines an IApplicationHandler interface (a contract) that the web app must implement and provide via DI. The IApplicationHandler interface looks like this:
 
