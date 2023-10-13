@@ -11,3 +11,5 @@ The idea is for this eventspurger to run in a container in a kubernetes CronJob,
 
 How often it runs can be configured in the CronJob yaml file.
 The unit (-u) and number (-n) arguments can be configured in a ConfigMap yaml file.
+
+Make sure the eventspurger and your postgres database are using the same timezone.

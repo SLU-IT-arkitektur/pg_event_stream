@@ -13,13 +13,25 @@ public static class ArgsParser
             Console.WriteLine("no unit provided, expecting -u <days|hours|minutes>");
             return (false, "", 0);
         }
-        
+
+        if (args.Count(x => x == "-u") > 1)
+        {
+            Console.WriteLine("multiple -u provided, expecting one -u <days|hours|minutes>");
+            return (false, "", 0);
+        }
+
         if (!args.Contains("-n"))
         {
             Console.WriteLine("no number provided, expecting -n <number as int>");
             return (false, "", 0);
         }
-        
+
+        if (args.Count(x => x == "-n") > 1)
+        {
+            Console.WriteLine("multiple -n provided, expecting one -n <number as int>");
+            return (false, "", 0);
+        }
+
         var argsList = args.ToList();
         var unit = argsList[argsList.IndexOf("-u") + 1].Trim();
         var number = argsList[argsList.IndexOf("-n") + 1].Trim();
@@ -29,13 +41,13 @@ public static class ArgsParser
             Console.WriteLine("number is not an integer");
             return (false, "", 0);
         }
-        
+
         if (unit.ToLower() != "days" && unit.ToLower() != "hours" && unit.ToLower() != "minutes")
         {
             Console.WriteLine("unit is not days, hours or minutes");
             return (false, "", 0);
         }
-        
+
         return (true, unit, n);
     }
 }

@@ -43,6 +43,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: eventsdb
+      TZ: 'Europe/Stockholm'
     volumes:
       - postgres:/data/postgres
 
