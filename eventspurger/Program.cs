@@ -17,7 +17,7 @@ DateTime TargetTimestamp = unit.ToLower() switch
     "days" => DateTime.Now.AddDays(-number),
     _ => throw new ArgumentException($"invalid unit: {unit}")
 };
-Console.WriteLine($"purging events table from events older than {number} {unit}");
+Console.WriteLine($"purging events older than {number} {unit} from the events table");
 var sql = $"DELETE FROM events WHERE created_at < @TargetTimestamp;";
 var numberOfDeletedEvents = await connection.ExecuteAsync(sql, new { TargetTimestamp });
 Console.WriteLine($"deleted {numberOfDeletedEvents} events");
