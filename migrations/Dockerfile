@@ -2,15 +2,10 @@ FROM ubuntu:jammy
 
 RUN apt-get update && \
     apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent
-
-RUN curl -sSL https://packagecloud.io/golang-migrate/migrate/gpgkey | apt-key add -
-RUN echo "deb https://packagecloud.io/golang-migrate/migrate/ubuntu/ jammy main" > /etc/apt/sources.list.d/migrate.list
-RUN apt-get update && \
-    apt-get install -y migrate
+    curl 
+    
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-amd64.tar.gz | tar xvz && \
+    ls -la && mv migrate /usr/local/bin/migrate
 
 COPY . .
 #make sure init.sh has correct line endings
