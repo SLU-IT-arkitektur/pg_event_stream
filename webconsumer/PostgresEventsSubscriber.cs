@@ -165,7 +165,7 @@ public class PostgresEventsSubscriber : BackgroundService
                 NpgsqlConnection connection = new(connectionString);
                 _logger.LogInformation($"Connecting to events database (attempt {retryAttempt + 1}/{maxRetryAttempts})");
                 await connection.OpenAsync();
-                _logger.LogInformation("Connected to events database successfullyParsedPayloadfully!");
+                _logger.LogInformation("Connected to events database successfully!");
                 return connection;
             }
             catch (Exception ex)
